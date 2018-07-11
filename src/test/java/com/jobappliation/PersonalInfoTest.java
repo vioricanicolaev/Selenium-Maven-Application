@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.BeforeClass;
@@ -40,7 +41,7 @@ public class PersonalInfoTest {
 	int yearsOfExperience;
 	String education;
 	String github;
-    List<String> certifications;
+    List<WebElement> certifications;
     String additionalSkills;
     Faker faker = new Faker();
     
@@ -87,9 +88,9 @@ public class PersonalInfoTest {
 		yearsOfExperience = faker.number().numberBetween(0, 11);
 		education = faker.number().numberBetween(1, 4)+"";
 		github = "https://github.com/vioricanicolaev";
-		certifications = new ArrayList<>();
-		certifications.add("Java OCA");
-		certifications.add("AWS");
+//		certifications = new ArrayList<>();
+//		certifications.add("Java OCA");
+//		certifications.add("AWS");
 		additionalSkills = faker.job().keySkills();
 
 		
@@ -101,6 +102,7 @@ public class PersonalInfoTest {
 		driver.findElement(By.xpath("//input[@name='Name_Last']")).sendKeys(lastName);
 		setGender(gender);
 		setDateOfBirth(dateOfBirth);
+		driver.findElement(By.xpath("//input[@name='Email']")).clear();
 		driver.findElement(By.xpath("//input[@name='Email']")).sendKeys(email);
 		driver.findElement(By.xpath("//input[@name='countrycode']")).sendKeys(phoneNumber);
 		driver.findElement(By.xpath("//input[@name='Address_City']")).sendKeys(city);
@@ -116,10 +118,16 @@ public class PersonalInfoTest {
 		//driver.findElement(By.xpath("//a[@rating_value='" + yearsOfExperience + "']")).click();
 		  driver.findElement(By.xpath("//a[@rating_value='"+ yearsOfExperience + "']")).click();;
 
-		
-		
 		Select educationList = new Select(driver.findElement(By.xpath("//select[@name='Dropdown']")));
 		educationList.selectByIndex(faker.number().numberBetween(1, educationList.getOptions().size()));
+		
+		certifications = driver.findElements(By.xpath("//input[@type='checkbox']"));
+		for (WebElement eachCertificat : certifications) {
+			eachCertificat.click();
+		}
+		driver.findElement(By.name("MultiLine")).clear();
+		driver.findElement(By.name("MultiLine")).sendKeys(additionalSkills);
+		driver.findElement(By.xpath("//em[.='Apply']")).click();
 		
 	}
 	

@@ -63,6 +63,8 @@ public class Element {
 		driver.get("https://google.com");
 		//driver.findElement(By.xpath("//button[@elname='next']")).click();
 		cSalary.sendKeys("12135");
+		
+		
 	}
 	
 	
